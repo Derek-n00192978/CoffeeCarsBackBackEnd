@@ -6,6 +6,7 @@ const { loginRequired } = require('../controllers/auth_controller');
 const { 
     readData, 
     readOne,
+    readAuth,
     updateData,
     deleteData,
     register,
@@ -14,6 +15,7 @@ const {
 
 router
     .get('/', readData)
+    .get('/auth', loginRequired, readAuth)
     .get('/:id', loginRequired, readOne)
     .post('/register', register)
     .post('/login', login)

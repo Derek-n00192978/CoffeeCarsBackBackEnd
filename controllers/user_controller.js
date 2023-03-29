@@ -55,6 +55,45 @@ const readData = (req, res) => {
     //     "msg" : "All User retrieved"
     // });
 };
+
+const readAuth = (req, res) => {
+
+    // let id = req.params.id;
+    //let id = req.user._id;
+
+    // console.log(req.user);
+
+    // connect to db and retrieve User with :id
+    User.findById(id).populate('vehicles')
+    .then((data) => {
+        if(data){
+            let img = `${process.env.STATIC_FILES_URL}${data.image_path}`;
+            data.image_path = img;
+            res.status(200).json(data);
+        }
+        else{
+            res.status(404).json({
+                "msg": `User with id: ${id} not found`
+            });
+        }
+        
+    })
+    .catch((err) => {
+        console.error(err);
+        if(err.name === 'CastError') {
+            res.status(404).json({
+                "msg": `Bad Request, ${id} is not a valid id`
+            })
+        }
+        else{
+            res.status(500).json(err)
+        }       
+
+    });
+    
+};
+
+
 const readOne = (req, res) => {
 
     let id = req.params.id;
@@ -130,7 +169,9 @@ const login = (req, res) => {
             res.status(200).json({
                 msg: 'All good',
                 token: token,
+                id: user._id,
                 email: user.email,
+                fName: user.fName
             })
         }
     })
@@ -170,7 +211,13 @@ const updateData = (req, res) => {
                  //old image delete//
                 ///////////////////
                 deleteImage(data.image_path)
-                ////////////////////
+                ///////////////////
+
+
+                data.password = bcrypt.hashSync(data.password, 10);
+
+
+
                 res.status(201).json(data);
             }
             else{
@@ -248,6 +295,7 @@ module.exports = {
     login,
     readData,
     readOne,
+    readAuth,
     updateData,
     deleteData
    
