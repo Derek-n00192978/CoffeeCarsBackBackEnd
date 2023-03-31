@@ -37,7 +37,7 @@ const deleteImage = async (filename) => {
     }
 };
 const readData = (req, res) => {
-    User.find().populate('vehicles')
+    User.find().populate('vehicles').populate('likes')
             .then((data) => {
                 console.log(data);
                 if(data.length > 0){
@@ -59,7 +59,7 @@ const readData = (req, res) => {
 const readAuth = (req, res) => {
 
     // let id = req.params.id;
-    //let id = req.user._id;
+    let id = req.user._id;
 
     // console.log(req.user);
 
@@ -99,7 +99,7 @@ const readOne = (req, res) => {
     let id = req.params.id;
 
     // connect to db and retrieve User with :id
-    User.findById(id).populate('vehicles')
+    User.findById(id).populate('vehicles').populate('likes')
     .then((data) => {
         if(data){
             let img = `${process.env.STATIC_FILES_URL}${data.image_path}`;

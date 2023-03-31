@@ -36,7 +36,16 @@ const vehicleSchema = Schema(
         }
 
     },
+    {
+        toJSON: { virtuals: true }
+    },
     { timestamps: true }
 );
+
+vehicleSchema.virtual('likes', {
+    ref: 'Like_Vehicle',
+    localField: '_id',
+    foreignField: 'vehicle_id'
+  });
 
 module.exports = model('Vehicle', vehicleSchema);

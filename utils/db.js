@@ -12,6 +12,7 @@ const connect = async () => {
     }
     catch(error){
         console.log(error);
+
     }
     finally {
         if (db !== null && db.readyState === 1) {

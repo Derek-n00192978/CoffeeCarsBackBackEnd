@@ -37,7 +37,7 @@ const deleteImage = async (filename) => {
 };
 
 const readData = (req, res) => {
-    Vehicle.find().populate('user')
+    Vehicle.find().populate('user').populate('likes')
             .then((data) => {
                 console.log(data);
                 if(data.length > 0){
@@ -61,7 +61,7 @@ const readOne = (req, res) => {
     let id = req.params.id;
 
     // connect to db and retrieve Vehicle with :id
-    Vehicle.findById(id).populate('user')
+    Vehicle.findById(id).populate('user').populate('likes')
     .then((data) => {
         if(data){
             let img = `${process.env.STATIC_FILES_URL}${data.image_path}`;
@@ -91,7 +91,7 @@ const readOne = (req, res) => {
 };
 
 const createData = (req, res) => {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    console.log("aa");
 
     console.log(req);
     let vehicleData = req.body;

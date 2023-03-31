@@ -40,8 +40,17 @@ const userSchema = Schema(
             ref: 'Vehicle'
         }
     },
+    {
+        toJSON: { virtuals: true }
+    },
     { timestamps: true }
 );
+
+userSchema.virtual('likes', {
+    ref: 'Like_Vehicle',
+    localField: '_id',
+    foreignField: 'user_id'
+  });
 //password checker
 userSchema.methods.comparePassword = function(password){
     return bcrypt.compareSync(password, this.password, function(result){

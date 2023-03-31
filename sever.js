@@ -47,7 +47,7 @@ app.use('/api/events', require('./routes/events'));
 
 app.use('/api/types', require('./routes/types'));
 
-app.use('/api/likeUsers', require('./routes/likeUsers'));
+
 
 app.use('/api/likeVehicles', require('./routes/likeVehicles'));
 
