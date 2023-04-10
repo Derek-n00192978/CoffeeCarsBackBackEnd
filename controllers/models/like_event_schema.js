@@ -9,8 +9,9 @@ const likeEventSchema = Schema(
         user_id:{
             type:Object,
             required: [true, 'user_id is followee field is required']    
+        },
     },
-}
+    { timestamps: true }
 );
 ;
 module.exports = model('Like_Event', likeEventSchema);

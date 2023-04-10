@@ -10,7 +10,6 @@ const {
 
 router
     .get('/', readLike)
-router
     .post('/', createLike)
  
 

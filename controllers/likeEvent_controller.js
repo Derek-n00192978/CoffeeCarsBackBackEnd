@@ -1,5 +1,34 @@
 const LikeEvent = require('../controllers/models/like_event_schema');
 
+const createLike = (req, res) => {
+    
+
+    console.log(req);
+    let likeEventData = req.body;
+
+    
+    // connect to db, check if email exists, if yes respond with error
+    // if some Vehicle info is missing, respond with error
+    LikeEvent.create(likeEventData)
+        .then((data) => {
+            console.log('New Event like created',data);
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            if(err.name === 'ValidationError'){
+                console.error('Validation Error!!', err);
+                res.status(422).json({
+                    "msg": "Validation Error",
+                    "err": err.message
+                })
+            }
+            else{
+            console.error(err);
+            res.status(500).json(err);
+            }
+        })
+   
+};
 
 const readLike = (req, res) => {
     LikeEvent.find().populate()
@@ -24,5 +53,6 @@ const readLike = (req, res) => {
 
 
 module.exports = {
-    readLike
+    readLike,
+    createLike
 };
