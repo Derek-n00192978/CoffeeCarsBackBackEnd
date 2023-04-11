@@ -49,12 +49,13 @@ app.use('/api/types', require('./routes/types'));
 
 
 
-app.use('/api/likeVehicles', require('./routes/likeVehicle'));
+app.use('/api/likeVehicle', require('./routes/likeVehicles'));
 
-app.use('/api/likeEvents', require('./routes/likeEvent'));
+app.use('/api/likeEvent', require('./routes/likeEvents'));
 
+app.use('/api/commentVehicle', require('./routes/commentVehicles'))
 
-
+app.use('/api/commentEvent', require('./routes/commentEvents'));
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
