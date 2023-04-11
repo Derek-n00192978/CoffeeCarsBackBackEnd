@@ -46,7 +46,7 @@ const readLike = (req, res) => {
                 res.status(500).json(err);
             });
     // res.status(200).json({
-    //     "msg" : "All Vehicle retrieved"
+    //     "msg" : "All Events retrieved"
     // });
 };
 

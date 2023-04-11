@@ -49,13 +49,11 @@ app.use('/api/types', require('./routes/types'));
 
 
 
-app.use('/api/likeVehicles', require('./routes/likeVehicles'));
+app.use('/api/likeVehicles', require('./routes/likeVehicle'));
 
-app.use('/api/likeEvents', require('./routes/likeEvents'));
+app.use('/api/likeEvents', require('./routes/likeEvent'));
 
-app.use('/api/commentEvent', require('/routes/commentEvent'));
 
-app.use('/api/commentVehicle', require('./routes/commentVehicle'))
 
 
 app.listen(port, () => {
