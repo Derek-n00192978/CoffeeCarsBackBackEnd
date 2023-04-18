@@ -1,6 +1,7 @@
 const User = require('../controllers/models/user_schema.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const LikeVehicle = require('../controllers/models/like_vehicle_schema');
 
 const fs = require('fs');
 const deleteImage = async (filename) => {
@@ -64,12 +65,19 @@ const readAuth = (req, res) => {
     // console.log(req.user);
 
     // connect to db and retrieve User with :id
-    User.findById(id).populate('vehicles')
-    .then((data) => {
-        if(data){
-            let img = `${process.env.STATIC_FILES_URL}${data.image_path}`;
-            data.image_path = img;
-            res.status(200).json(data);
+
+    User.findById(id).populate('vehicles').populate({
+        path: 'likes',
+        populate: { path: 'vehicle_id'}
+    })
+    .then((user) => {
+        if(user){
+            let img = `${process.env.STATIC_FILES_URL}${user.image_path}`;
+            user.image_path = img;
+
+            res.status(200).json(user);
+
+           
         }
         else{
             res.status(404).json({

@@ -31,7 +31,9 @@ const createLike = (req, res) => {
 };
 
 const readLike = (req, res) => {
-    LikeVehicle.find().populate()
+    let id = req.user._id;
+    
+    LikeVehicle.find({ user_id: id }).populate('vehicle_id')
             .then((data) => {
                 console.log(data);
                 if(data.length > 0){
@@ -51,8 +53,31 @@ const readLike = (req, res) => {
 };
 
 
+const getUsersThatLiked = (req, res) => {
+    let id = req.params.id;
+    
+    LikeVehicle.find({ vehicle_id: id }).populate('user_id')
+            .then((data) => {
+                console.log(data);
+                if(data.length > 0){
+                    res.status(200).json(data);
+                }
+                else{
+                    res.status(404).json("None found");
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    // res.status(200).json({
+    //     "msg" : "All Vehicle retrieved"
+    // });
+};
+
 
 module.exports = {
     readLike,
-    createLike
+    createLike,
+    getUsersThatLiked
 };

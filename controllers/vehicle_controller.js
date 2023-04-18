@@ -1,4 +1,5 @@
 const Vehicle = require('../controllers/models/vehicle_schema');
+const User = require('../controllers/models/user_schema');
 
 const fs = require('fs');
 const deleteImage = async (filename) => {
@@ -114,12 +115,45 @@ const createData = (req, res) => {
             message: req.imageError || "image not uploaded"
         })
     }
+    
+    let id = req.user._id;
+    vehicleData.user = id;
     // connect to db, check if email exists, if yes respond with error
     // if some Vehicle info is missing, respond with error
     Vehicle.create(vehicleData)
             .then((data) => {
                 console.log('New Vehicle created',data);
-                res.status(201).json(data);
+
+
+                User.findById(id)
+                .then((userData) => {
+                    if(userData){
+                        userData.vehicles.push(data);
+                        userData.save();
+                        res.status(201).json(data);
+                    }
+                    else{
+                        res.status(404).json({
+                            "msg": `User with id: ${id} not found`
+                        });
+                    }
+                    
+                })
+                .catch((err) => {
+                    console.error(err);
+                    if(err.name === 'CastError') {
+                        res.status(404).json({
+                            "msg": `Bad Request, ${id} is not a valid id`
+                        })
+                    }
+                    else{
+                        res.status(500).json(err)
+                    }       
+            
+                });
+
+
+                
             })
             .catch((err) => {
                 if(err.name === 'ValidationError'){
