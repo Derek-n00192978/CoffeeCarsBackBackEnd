@@ -158,7 +158,7 @@ const register = (req, res) => {
 const login = (req, res) => {
     User.findOne({
         email: req.body.email
-    })
+    }).populate('vehicles').populate('likes')
     .then((user) => {
         if(!user || !user.comparePassword(req.body.password)){
             res.status(401).json({
@@ -171,6 +171,7 @@ const login = (req, res) => {
                 email: user.email,
                 fName: user.fName,
                 _id: user._id
+               
                 //role: admin
             },process.env.APP_KEY) //added salt 
             
@@ -179,7 +180,9 @@ const login = (req, res) => {
                 token: token,
                 id: user._id,
                 email: user.email,
-                fName: user.fName
+                fName: user.fName,
+                vehicles: user.vehicle,
+                likes: user.likes
             })
         }
     })

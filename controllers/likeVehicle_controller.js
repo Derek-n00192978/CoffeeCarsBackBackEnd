@@ -5,28 +5,41 @@ const createLike = (req, res) => {
 
     console.log(req);
     let likeVehicleData = req.body;
-
+////////////////////likeVehicle.findOne/////////////
+    LikeVehicle.find(likeVehicleData)
+        .then((data) => {
+            if(data.length == 0){
+                LikeVehicle.create(likeVehicleData)
+                    .then((data) => {
+                        console.log('New Vehicle like created',data);
+                        res.status(201).json(data);
+                    })
+                    .catch((err) => {
+                        if(err.name === 'ValidationError'){
+                            console.error('Validation Error!!', err);
+                            res.status(422).json({
+                                "msg": "Validation Error",
+                                "err": err.message
+                            })
+                        }
+                        else{
+                            console.error(err);
+                            res.status(500).json(err);
+                        }
+                    })
+            }
+            else{
+                LikeVehicle.deleteOne(likeVehicleData)
+                .then((data) => {
+                    
+                    res.status(201).json(data);
+                })
+            }
+        })
     
     // connect to db, check if email exists, if yes respond with error
     // if some Vehicle info is missing, respond with error
-    LikeVehicle.create(likeVehicleData)
-        .then((data) => {
-            console.log('New Vehicle like created',data);
-            res.status(201).json(data);
-        })
-        .catch((err) => {
-            if(err.name === 'ValidationError'){
-                console.error('Validation Error!!', err);
-                res.status(422).json({
-                    "msg": "Validation Error",
-                    "err": err.message
-                })
-            }
-            else{
-            console.error(err);
-            res.status(500).json(err);
-            }
-        })
+    
    
 };
 
